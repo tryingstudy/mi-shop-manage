@@ -92,13 +92,14 @@
 
 <style lang="scss" scoped>
   .container{
-    margin: 20px 20px 0;
+    margin: 10px 20px 0;
     height: 140px;
     >.el-row .el-col .card-panel{
       float: left;
       width: 100%;
         height: 108px;
         margin-bottom: 32px;
+        margin-top: 20px;
         cursor: pointer;
         font-size: 12px;
         position: relative;

@@ -275,4 +275,7 @@ export default{
       display: inline-block;
     }
   }
+  .el-tabs--border-card>.el-tabs__content{
+    padding: 0px;
+  }
 </style>

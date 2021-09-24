@@ -36,7 +36,7 @@ export default {
   computed: {
       ...mapGetters([
         'id',
-        'name'
+        'name',
       ])
   },
   mounted () {
