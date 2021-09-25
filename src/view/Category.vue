@@ -5,13 +5,12 @@
         :data="setTree" 
         node-key="id" 
         ref="tree" 
-        :default-expanded-keys="[1]"
         highlight-current 
         :props="defaultProps"
         :expand-on-click-node="false"
         >
             <span class="custom-tree-node" slot-scope="{ node, data }">
-              <img src="../assets/img/bingxiang.jpg" style="">
+              <img v-if="data.parentId!=0" :src="data.imgurl" width="50px" height="50px">
               <span>{{ node.label }}</span>
               <span >
                 <el-button class="iconfont icon-tianjia"
@@ -37,46 +36,33 @@
       </el-aside>
       <el-main>
         <div v-show="addcategoryForm">
-          <h3>添加分类</h3>
-          <el-form ref="addForm" >
-            <el-form-item label="分类名称" prop="phone">
-              <el-input v-model="addForm.phone" placeholder="分类名称"></el-input>
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+            <el-form-item label="父.类名称">
+              {{parentname}}
             </el-form-item>
-          <span>上传类别图片</span>
-          <el-upload
-            style="margin-top:30px"
-            action="#"
-            ref="upload"
-            list-type="picture-card"
-            :auto-upload="false">
-              <i slot="default" class="el-icon-plus"></i>
-              <div slot="file" slot-scope="{file}">
-                <img
-                  class="el-upload-list__item-thumbnail"
-                  :src="file.url" alt=""
-                >
-                <span class="el-upload-list__item-actions">
-                  <span
-                    class="el-upload-list__item-preview"
-                    @click="handlePictureCardPreview(file)"
-                  >
-                    <i class="el-icon-zoom-in"></i>
-                  </span>
-                  <span
-                    v-if="!disabled"
-                    class="el-upload-list__item-delete"
-                    @click="handleRemove(file)"
-                  >
-                    <i class="el-icon-delete"></i>
-                  </span>
-                </span>
-              </div>
-            </el-upload>
-            <el-dialog :visible.sync="dialogVisible">
-              <img width="100%" :src="dialogImageUrl" alt="">
-            </el-dialog>
-            <el-button type="primary" class="btn btn1" @click="addcategory">添加</el-button>
-            <el-button type="info" class="btn btn2">重置</el-button>
+            <el-form-item label="类别名称" prop="name">
+              <el-input v-model="ruleForm.name" style="width: 300px"></el-input>
+            </el-form-item>
+            <el-form-item label="上传图片" ref="uploadElement" prop="imageUrl">
+              <el-input v-model="ruleForm.imageUrl" v-if="false"></el-input>
+                <el-upload
+                        class="avatar-uploader"
+                        ref="upload"
+                        action="http://localhost:8081/category/addcategory"
+                        :show-file-list="false"
+                        :on-success="handleCategorySuccess"
+                        :before-upload="beforeAvatarUpload"
+                        :on-change="handleChange"
+                        :auto-upload="false"
+                        :data="ruleForm">
+                  <img v-if="ruleForm.imageUrl" :src="ruleForm.imageUrl" class="avatar">
+                  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+              </el-form-item>
+              <el-form-item>
+                  <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
+                  <el-button @click="resetForm('ruleForm')">重置</el-button>
+              </el-form-item>
           </el-form>
         </div>
         <div v-show="updatecategoryForm">
@@ -94,8 +80,10 @@
     </el-container>
 </template>
 <script>
+ import {mixin} from '../mixins/index.js';
 import { HttpManager } from '../api/index'
 export default {
+  mixins: [mixin],
    data() {
         return {
             addcategoryForm: false,
@@ -110,13 +98,29 @@ export default {
             disabled: false,
             defaultProps: {
                 children: 'children',
-                label: 'name'
+                label: 'name',
+                img: 'imgurl',
             },
+            parentname: '',
+            ruleForm: {
+                name: '',
+                imageUrl: '',
+                id: '',
+            },
+            rules: {
+                name: [
+                    {required: true, message: '请输入分类名称', trigger: 'blur'},
+                ],
+                imageUrl: [
+                    {required: true, message: '请上传图片', trigger: 'blur'},
+                ],
+            }
         }
     },
      created() {
         var _this = this;
         HttpManager.getCategory().then(data => {
+          console.log(data)
             this.setTree = data
             _this.getListData()
         });
@@ -127,6 +131,8 @@ export default {
       this.updatecategoryForm = true
     },
     addform(node, data) {
+      this.parentname = node.label
+      this.ruleForm.id = data.id
       this.addcategoryForm= true
       this.updatecategoryForm = false
     },
@@ -139,6 +145,7 @@ export default {
                 id: data.id,
                 name: data.name,
                 parentId: parentId,
+                // imgurl: data.img,
             }
             dataArray.push(objTemp);
         }
@@ -158,6 +165,7 @@ export default {
                         id: data.id,
                         name: data.name,
                         parentId: parentId,
+                        imgurl: data.img,
                     }
                     childrenArray.push(objTemp);
                 }
@@ -179,10 +187,42 @@ export default {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    addcategory(){
-
+    submitForm(formName) {
+      let vm = this;
+      this.$refs[formName].validate((valid) => {
+          if (valid) {
+              vm.$refs.upload.submit();
+          } else {
+              return false;
+          }
+      });
     },
-   },
+    resetForm(formName) {
+        this.$refs[formName].resetFields();
+        this.ruleForm.imageUrl = '';
+    },
+
+    handleCategorySuccess (res, file) {
+          let _this = this
+          if (res.code === 1) {
+            _this.$notify({
+              title: '上传成功',
+              type: 'success'
+            })
+            _this.$refs.ruleForm.resetFields();
+            this.ruleForm.imageUrl = '';
+            _this.addcategoryForm= false;
+          } else {
+            _this.$notify({
+              title: '上传失败',
+              type: 'error'
+            })
+          }
+        },
+    handleChange (file, fileList) {
+        this.ruleForm.imageUrl = URL.createObjectURL(file.raw);
+    },
+  },
 }
 
 
@@ -211,6 +251,7 @@ export default {
   .btn1{
       margin-left: 200px;
     }
+  
 </style>
 <style>
   .el-tree-node__content{
@@ -219,4 +260,34 @@ export default {
   .custom-tree-node{
     height: 50px;
   }
+  input[type="file"] {
+        display: none;
+    }
+ 
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+ 
+    .avatar-uploader .el-upload:hover {
+        border-color: #409EFF;
+    }
+ 
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+ 
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
 </style>
