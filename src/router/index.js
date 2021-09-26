@@ -29,10 +29,20 @@ const router = new Router({
           	meta: { title: 'consumer'}
           },
           {
+          	path: "/lunbo",
+          	component: resolve => require(['../view/Lunbo.vue'], resolve),
+          	meta: { title: 'lunbo'}
+          },
+          {
           	path: "/category",
-          	component: resolve => require(['../view/category.vue'], resolve),
+          	component: resolve => require(['../view/Category.vue'], resolve),
           	meta: { title: 'category'}
-          }
+          },
+          {
+            path: "/product",
+            component: resolve => require(['../view/Product.vue'], resolve),
+            meta: { title: 'product' }
+          },
     		],
     }
   ],

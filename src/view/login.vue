@@ -27,7 +27,7 @@
         </span>
       </el-form-item>
       <div class="login-btn">
-        <el-button type="primary"style="width:100%;margin-bottom:30px;" @click="Login">登录</el-button>
+        <el-button type="primary" style="width:100%;margin-bottom:30px;" @click="Login">登录</el-button>
       </div>
     </el-form>
 	</div>

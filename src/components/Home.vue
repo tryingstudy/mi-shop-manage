@@ -66,7 +66,6 @@ export default {
       },
       //移除tab标签
       tabRemove(targetName){
-        console.log("tabRemove",targetName);
         //首页不删
         if(targetName == '/info'){
           return
@@ -92,7 +91,6 @@ export default {
       // 当前路由不是首页时，添加首页以及另一页到store里，并设置激活状态
       // 当当前路由是首页时，添加首页到store，并设置激活状态
      if (this.$route.path !== '/' && this.$route.path !== '/info') {
-        console.log('1');
         this.$store.commit('add_tabs', {route: '/info' , name: '首页'});
         //通过路由的判断，来加入标签页的名称
         if(this.$route.path == "/comsume"){
@@ -100,6 +98,12 @@ export default {
         }
         if(this.$route.path == "/category"){
           this.$store.commit('add_tabs', {route: this.$route.path , name: "分类管理"});
+        }
+        if(this.$route.path == "/lunbo"){
+          this.$store.commit('add_tabs', {route: this.$route.path , name: "轮播广告"});
+        }
+        if(this.$route.path == "/product"){
+          this.$store.commit('add_tabs', {route: this.$route.path , name: "商品管理"});
         }
         this.$store.commit('set_active_index', this.$route.path);
       } else {
@@ -133,6 +137,12 @@ export default {
             }
             if(to.path == "/category"){
               this.$store.commit('add_tabs', {route: to.path, name: "分类管理"});
+            }
+            if(to.path == "/lunbo"){
+              this.$store.commit('add_tabs', {route: to.path, name: "轮播广告"});
+            }
+            if(to.path == "/product"){
+              this.$store.commit('add_tabs', {route: to.path, name: "商品管理"});
             }
             
             this.$store.commit('set_active_index', to.path);

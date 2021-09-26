@@ -40,7 +40,7 @@
       </el-menu-item>
       <el-menu-item index="product" key="product">
         <i class="iconfont icon-chanpin"></i>
-        <span slot="title">产品管理</span>
+        <span slot="title">商品管理</span>
       </el-menu-item>
       <el-menu-item index="order" key="order">
         <i class="iconfont icon-icon"></i>
@@ -93,4 +93,9 @@ export default {
   padding-left: 3px;
   padding-right: 8px;
 }
+</style>
+<style>
+  .el-menu-item-group__title{
+    padding: 0px;
+  }
 </style>

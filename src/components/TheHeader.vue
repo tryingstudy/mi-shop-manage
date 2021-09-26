@@ -9,13 +9,13 @@
         <div class="user-avator">
           <img src="../assets/img/user.jpg" />
         </div>
-        <el-dropdown class="user-name" trigger="click" @command="handleCommand">
+        <el-dropdown class="user-name" trigger="click" @command="Out">
           <span class="el-dropdown-link">
             {{name}}
             <i class="el-icon-caret-bottom"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="loginout">退出登录</el-dropdown-item>
+            <el-dropdown-item>退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -23,10 +23,13 @@
   </div>
 </template>
 <script>
+import {mixin} from '../mixins/index'
 import _ctrEvent from '../assets/js/ctr-event'
 import { mapGetters } from 'vuex'
+import { HttpManager } from '../api'
 
 export default {
+  mixins: [mixin],
   data () {
     return {
       collapse: true,
@@ -45,10 +48,20 @@ export default {
     }
   },
   methods: {
-    handleCommand (command) {
-      if (command === 'loginout') {
-        this.$router.push('/')
-      }
+    Out () {
+      let params = new URLSearchParams();
+      params.append("id",this.id);
+      params.append("name",this.name);
+      HttpManager.Out(params).then( res => {
+        if(res.code === 1){
+          this.notify('退出登陆成功', 'success')
+          localStorage.removeItem('Authorization');
+          this.$router.push('/')
+        }
+        else{
+           this.notify('退出登陆失败', 'error')
+        }
+      })
     },
     collapseChage () {
       this.collapse = !this.collapse

@@ -1,3 +1,4 @@
+import { HttpManager } from '../api/index'
 export const mixin = {
   methods: {
     // 提示信息
@@ -56,6 +57,55 @@ export const mixin = {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
-    }
+    },
+    getCategoryData() {
+      var _this = this;
+      HttpManager.getCategory().then(data => {
+        console.log(data)
+        this.setTree = data
+        _this.getListData()
+      });
+    },
+    getListData() {
+      let dataArray = [];
+      this.setTree.forEach(function (data) {
+        let parentId = data.parentId;
+        if (parentId == 0) {
+          let objTemp = {
+            id: data.id,
+            name: data.name,
+            parentId: parentId,
+          }
+          dataArray.push(objTemp);
+        }
+      })
+      this.data2treeDG(this.setTree, dataArray)
+    },
+    data2treeDG(datas, dataArray) {
+      for (let j = 0; j < dataArray.length; j++) {
+        let dataArrayIndex = dataArray[j];
+        let childrenArray = [];
+        let Id = dataArrayIndex.id;
+        for (let i = 0; i < datas.length; i++) {
+          let data = datas[i];
+          let parentId = data.parentId;
+          if (parentId == Id) {
+            let objTemp = {
+              id: data.id,
+              name: data.name,
+              parentId: parentId,
+              imgurl: data.img,
+            }
+            childrenArray.push(objTemp);
+          }
+        }
+        dataArrayIndex.children = childrenArray;
+        if (childrenArray.length > 0) {//有儿子节点则递归
+          this.data2treeDG(datas, childrenArray)
+        }
+      }
+      this.setTree = dataArray;
+      return dataArray;
+    },
   },
 }

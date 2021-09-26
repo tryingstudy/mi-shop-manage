@@ -28,9 +28,9 @@
                   <div>{{changeSex(scope.row.sex) }}</div>
               </template>
           </el-table-column>
-          <el-table-column label="操作" width="300" align="center">
+          <el-table-column label="操作" width="270" align="center">
               <template slot-scope="scope">
-                  <el-button @click="handleEdit(scope.row)">编辑</el-button>
+                  <el-button @click="handleEdit(scope.row)" style="flex:1">编辑</el-button>
                   <el-button type="danger" @click="handleDelete(scope.row.userId)">删除</el-button>
               </template>
           </el-table-column>
@@ -123,10 +123,10 @@ export default{
           sex: '',
       },
       form: {
-       phone: '',
-       password: '',
-       name: '',
-       sex: '',
+        phone: '',
+        password: '',
+        name: '',
+        sex: '',
       },
       tableData: [],
       tempDate: [],
@@ -277,5 +277,10 @@ export default{
   }
   .el-tabs--border-card>.el-tabs__content{
     padding: 0px;
+  }
+</style>
+<style>
+  .el-table{
+    overflow-y:none;
   }
 </style>
