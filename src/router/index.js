@@ -43,6 +43,11 @@ const router = new Router({
             component: resolve => require(['../view/Product.vue'], resolve),
             meta: { title: 'product' }
           },
+          {
+            path: "/contentheader",
+            component: resolve => require(['../view/ContentHeader.vue'], resolve),
+            meta: { title: 'contentheader' }
+          },
     		],
     }
   ],

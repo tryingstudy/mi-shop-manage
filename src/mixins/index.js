@@ -58,54 +58,27 @@ export const mixin = {
       }
       return isJPG && isLt2M
     },
+    //获取分类
     getCategoryData() {
-      var _this = this;
       HttpManager.getCategory().then(data => {
-        console.log(data)
         this.setTree = data
-        _this.getListData()
       });
     },
-    getListData() {
-      let dataArray = [];
-      this.setTree.forEach(function (data) {
-        let parentId = data.parentId;
-        if (parentId == 0) {
-          let objTemp = {
-            id: data.id,
-            name: data.name,
-            parentId: parentId,
-          }
-          dataArray.push(objTemp);
-        }
-      })
-      this.data2treeDG(this.setTree, dataArray)
+    //图片数量超过限制的钩子函数
+    handleNum(file,fileList){
+      alert('图片数量超过限制');
     },
-    data2treeDG(datas, dataArray) {
-      for (let j = 0; j < dataArray.length; j++) {
-        let dataArrayIndex = dataArray[j];
-        let childrenArray = [];
-        let Id = dataArrayIndex.id;
-        for (let i = 0; i < datas.length; i++) {
-          let data = datas[i];
-          let parentId = data.parentId;
-          if (parentId == Id) {
-            let objTemp = {
-              id: data.id,
-              name: data.name,
-              parentId: parentId,
-              imgurl: data.img,
-            }
-            childrenArray.push(objTemp);
-          }
-        }
-        dataArrayIndex.children = childrenArray;
-        if (childrenArray.length > 0) {//有儿子节点则递归
-          this.data2treeDG(datas, childrenArray)
-        }
-      }
-      this.setTree = dataArray;
-      return dataArray;
+    //图片删除
+    handleRemove(file) {
+      let fileList = this.$refs.upload.uploadFiles;
+      let index = fileList.findIndex(fileItem => { return fileItem.uid === file.uid });
+      fileList.splice(index, 1);
     },
-  },
+    //图片预览
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    
+  }
 }

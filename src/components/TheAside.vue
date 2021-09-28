@@ -28,9 +28,9 @@
             <i class="iconfont icon-lunbo"></i>
             <span slot="title">轮播广告</span>
           </el-menu-item>
-          <el-menu-item index="phone">
+          <el-menu-item index="contentheader">
             <i class="iconfont icon-icon-"></i>
-            <span slot="title">手机广告</span>
+            <span slot="title">页头广告</span>
           </el-menu-item>
         </el-menu-item-group>
       </el-submenu>

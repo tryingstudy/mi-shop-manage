@@ -105,9 +105,11 @@ export default {
         if(this.$route.path == "/product"){
           this.$store.commit('add_tabs', {route: this.$route.path , name: "商品管理"});
         }
+       if(this.$route.path == "/contentheader"){
+         this.$store.commit('add_tabs', {route: this.$route.path , name: "页头广告"});
+       }
         this.$store.commit('set_active_index', this.$route.path);
       } else {
-        console.log('2');
         this.$store.commit('add_tabs', {route: '/info', name: '首页'});
         this.$store.commit('set_active_index', '/info');
         this.$router.push('/info');
@@ -120,9 +122,6 @@ export default {
           //未打开的，将其放入队列里
           let flag = false;
           for(let item of this.$store.state.openTab){
-            console.log("item.path",item.route)
-            console.log("t0.path",to.path)
-  
             if(item.route === to.path){
 
               this.$store.commit('set_active_index',to.path)
@@ -141,10 +140,13 @@ export default {
             if(to.path == "/lunbo"){
               this.$store.commit('add_tabs', {route: to.path, name: "轮播广告"});
             }
+            if(to.path == "/contentheader"){
+              this.$store.commit('add_tabs', {route: to.path, name: "页头广告"});
+            }
             if(to.path == "/product"){
               this.$store.commit('add_tabs', {route: to.path, name: "商品管理"});
             }
-            
+
             this.$store.commit('set_active_index', to.path);
           }
       }

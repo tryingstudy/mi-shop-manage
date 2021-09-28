@@ -5,7 +5,7 @@
           <el-input v-model="select_word"  placeholder="筛选相关用户" class="handle-input mr10"></el-input>
           <el-button type="primary"  @click="centerDialogVisible = true">添加新用户</el-button>
         </div>
-        <el-table :data="data" border size="mini" style="width: 100%;font-size: 15px;" ref="multipleTable" height="550px" @selection-change="handleSelectionChange">
+        <el-table :data="data" border size="mini" style="width: 100%;font-size: 15px;" ref="multipleTable" @selection-change="handleSelectionChange">
           <el-table-column type="selection" width="40" align="center"></el-table-column>
           <el-table-column label="头像" width="150" align="center">
             <template slot-scope="scope">
@@ -268,7 +268,6 @@ export default{
 <style lang="scss" scoped>
   .handle-box {
     margin: 20px 10px 20px 20px;
-    margin-bottom: 20px;
     font-size: 12px;
     .handle-input {
       width: 300px;
@@ -277,10 +276,5 @@ export default{
   }
   .el-tabs--border-card>.el-tabs__content{
     padding: 0px;
-  }
-</style>
-<style>
-  .el-table{
-    overflow-y:none;
   }
 </style>

@@ -1,19 +1,19 @@
 <template>
     <el-container style="margin-top:10px;">
       <el-aside width="500px" style="border:1px;height:100%;background:#fff">
-        <el-tree 
-        :data="setTree" 
-        node-key="id" 
-        ref="tree" 
-        highlight-current 
+        <el-tree
+        :data="setTree"
+        node-key="id"
+        ref="tree"
+        highlight-current
         :props="defaultProps"
         :expand-on-click-node="false"
         >
             <span class="custom-tree-node" slot-scope="{ node, data }">
-              <img v-if="data.parentId!=0" :src="data.imgurl" width="50px" height="50px">
+              <img v-if="data.parentId!=0" :src="data.img" width="50px" height="50px">
               <span>{{ node.label }}</span>
               <span class="btn">
-                <el-button 
+                <el-button
                   title="添加分类"
                   class="iconfont icon-tianjia"
                   type="text"
@@ -143,7 +143,7 @@ export default {
             defaultProps: {
                 children: 'children',
                 label: 'name',
-                img: 'imgurl',
+                img: 'img',
             },
             parentname: '',
             ruleForm: {
@@ -184,15 +184,6 @@ export default {
       }
       this.delVisible = true
     },
-    handleRemove(file) {
-      let fileList = this.$refs.upload.uploadFiles;
-      let index = fileList.findIndex( fileItem => {return fileItem.uid === file.uid});
-      fileList.splice(index, 1);
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
-    },
     submitForm(formName) {
       let vm = this;
       this.$refs[formName].validate((valid) => {
@@ -216,7 +207,7 @@ export default {
           type: 'success'
         })
         _this.handleRemove(file);
-        _this.getData();
+        _this.getCategoryData();
         _this.$refs.ruleForm.resetFields();
       } else {
         _this.$notify({
@@ -264,7 +255,7 @@ export default {
 <style lang="scss" scoped>
   .breadcrumb{
     height: 30px;
-    padding: 1px 0px;   
+    padding: 1px 0px;
   }
    .custom-tree-node {
     flex: 1;

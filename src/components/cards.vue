@@ -42,7 +42,7 @@
                   产品数量
                 </div>
                 <div class="card-panel-num">
-                  2000
+                  {{ productnum }}
                 </div>
               </div>
             </div>
@@ -74,6 +74,7 @@
   		return {
         usernum: '',
         newnum: '',
+        productnum: '',
   		}
   	},
     created(){
@@ -84,6 +85,7 @@
         HttpManager.getData().then(res => {
           this.usernum = res.usernum
           this.newnum = res.newnum
+          this.productnum = res.productnum
         })
       },
     },
