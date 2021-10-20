@@ -49,24 +49,20 @@ export const mixin = {
     },
     beforeAvatarUpload (file) {
       const isJPG = (file.type === 'image/jpeg') || (file.type === 'image/png')
-      const isLt2M = file.size / 1024 / 1024 < 2
+      const isLt3M = file.size / 1024 / 1024 < 3
       if (!isJPG) {
         this.$message.error('上传头像图片只能是 JPG 格式!')
       }
-      if (!isLt2M) {
-        this.$message.error('上传头像图片大小不能超过 2MB!')
+      if (!isLt3M) {
+        this.$message.error('上传头像图片大小不能超过 3MB!')
       }
-      return isJPG && isLt2M
+      return isJPG && isLt3M
     },
     //获取分类
     getCategoryData() {
       HttpManager.getCategory().then(data => {
         this.setTree = data
       });
-    },
-    //图片数量超过限制的钩子函数
-    handleNum(file,fileList){
-      alert('图片数量超过限制');
     },
     //图片删除
     handleRemove(file) {
@@ -79,6 +75,6 @@ export const mixin = {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
-    
+
   }
 }

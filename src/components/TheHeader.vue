@@ -92,7 +92,6 @@ export default {
 .header .logo {
   float: left;
   width: 250px;
-  font-family: 26px;
   line-height: 50px;
 }
 

@@ -44,7 +44,7 @@ const HttpManager= {
   delbanner: (bannerId) => get(`banner/delbanner?bannerId=${bannerId}`),
 
   //获取页头广告
-  getAllContent: () => post("content/getAllContent"),
+  getAllContent: () => get("content/getAllContent"),
 }
 
 export {HttpManager}

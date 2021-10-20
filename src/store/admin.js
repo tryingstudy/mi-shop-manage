@@ -2,6 +2,7 @@ const admin = {
   state: {
     id: '',
     name: '',
+    currentPage: '',
     openTab:[],//所有打开的路由
     activeIndex:'/info' , //也可以是默认激活路径；激活状态
   },

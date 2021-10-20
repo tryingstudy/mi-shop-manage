@@ -224,7 +224,7 @@ export default {
         if(res.code === 1){
           this.renameForm = false
           this.notify('修改成功', 'success')
-          this.getData();
+          this.getCategoryData();
         }else{
           this.notify('修改失败', 'error')
         }
@@ -239,7 +239,7 @@ export default {
         if(res.code === 1){
           this.delVisible = false
           this.notify('删除成功', 'success')
-          this.getData();
+          this.getCategoryData();
         }else{
           this.notify('删除失败', 'error')
         }

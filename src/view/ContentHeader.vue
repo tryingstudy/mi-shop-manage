@@ -174,9 +174,9 @@
               <el-input v-model="headerform.sort" placeholder="排序值" style="width:300px"></el-input>
             </el-form-item>
           </el-form>
-          <div class="demo-drawer__footer">
-            <el-button @click="">取 消</el-button>
-            <el-button type="primary" @click="submitForm('headerform')">确定</el-button>
+          <div class="btnboot">
+            <el-button @click="cancelForm" style="width: 150px">取 消</el-button>
+            <el-button type="primary"  style="width: 150px" @click="submitForm('headerform')">确定</el-button>
           </div>
         </div>
       </el-drawer>
@@ -254,7 +254,6 @@ export default {
     },
     getAllContent(){
       HttpManager.getAllContent().then(res => {
-        this.alltable = res
         this.xiaomitable = [],
         this.redmitable = [],
         this.tvtable = [],
@@ -263,7 +262,7 @@ export default {
         this.jiadiantable = [],
         this.luyouqitable = [],
         this.zhinengtable = []
-        for (let item of this.alltable){
+        for (let item of res){
           if (item.categoryId === 2) {
             this.xiaomitable.push(item)
           }
@@ -300,6 +299,10 @@ export default {
           return false;
         }
       });
+    },
+    cancelForm() {
+      this.drawer = false;
+      this.$refs.headerform.resetFields();
     },
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -338,5 +341,10 @@ export default {
     .btn{
       margin-bottom: 20px;
     }
+  }
+  .btnboot{
+    position: absolute;
+    right: 30px;
+    left: 40px;
   }
 </style>

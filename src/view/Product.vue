@@ -46,8 +46,8 @@
           <el-table-column label="编号" prop="productId" width="60" align="center"></el-table-column>
           <el-table-column label="名称" prop="productName" width="80" align="center"></el-table-column>
           <el-table-column label="分类" prop="name" width="70" align="center"></el-table-column>
-          <el-table-column label="商品标题" prop="productTitle" width="90" align="center"></el-table-column>
-          <el-table-column label="商品介绍" prop="productIntro" width="362" align="center"></el-table-column>
+          <el-table-column label="商品标题" prop="productTitle" width="175" align="center"></el-table-column>
+          <el-table-column label="商品介绍" prop="productIntro" width="340" align="center"></el-table-column>
           <el-table-column label="原价" prop="productPrice" width="67" align="center"></el-table-column>
           <el-table-column label="售价" sortable prop="productSellingPrice" width="80" align="center"></el-table-column>
           <el-table-column label="库存" prop="productNum" width="70" align="center"></el-table-column>
@@ -246,6 +246,7 @@
 <script>
  import {mixin} from '../mixins/index';
 import { HttpManager } from '../api/index'
+ import {mapGetters} from "vuex";
     export default {
         mixins: [mixin],
         data(){
@@ -311,7 +312,7 @@ import { HttpManager } from '../api/index'
         computed: {
             data () {
                 return this.tableData.slice((this.currentPage - 1) * this.pageSize, this.currentPage * this.pageSize)
-            }
+            },
         },
          watch: {
             select_word: function () {
@@ -324,9 +325,6 @@ import { HttpManager } from '../api/index'
                             this.tableData.push(item)
                         }
                         if(item.name.includes(this.select_word)){
-                          this.tableData.push(item)
-                        }
-                        if(item.categoryId==this.select_word){
                           this.tableData.push(item)
                         }
                     }
